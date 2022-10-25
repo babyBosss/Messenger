@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter</title>
+    <link rel="stylesheet" type="text/css" href="/static/loginpage.css">
+
+</head>
+<body>
+<div class="registration-cssave">
+    <form id="registr" name="registr">
+        <h3 class="text-center">Вход в чат</h3>
+        <div class="form-group">
+            <input class="form-control item" type="text" name="username" maxlength="15" minlength="4" pattern="^[a-zA-Z0-9_.-]*$" id="username" placeholder="Имя пользователя" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control item" type="password" name="password" minlength="6" id="password" placeholder="Пароль" required>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block create-account" type="button" onclick="sendJSON()">Войти</button>
+        </div>
+        {% for cat, msg in get_flashed_messages(True) %}
+        <div class="flash {{ cat }}" id="flashmsg">{{ msg }}</div>
+        {% endfor %}
+    </form>
+</div>
+
+<script>
+    function sendJSON(){
+
+        var name = document.getElementById("username");
+        var pas = document.getElementById("password");
+        if (name.value !=="" && pas.value !==""){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/login");
+            xhr.responseType = 'json';
+            xhr.onload = () => {
+                window.location.href = xhr.response["result"]["link"];
+            }
+            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.send(JSON.stringify({'username': name.value, 'password': pas.value}));
+        }
+    }
+</script>
+</body>
+</html>

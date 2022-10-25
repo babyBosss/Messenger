@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
+</head>
+<body>
+<div id="logoutdiv"><label>{{current_user.get_name()}} </label><img src="/static/logout_icon.png" onclick="location.href=`{{url_for('logout')}}`" height=20px width=20px ></div>
+<div id="dialog-div">
+    <div id="upper-part">
+        {% for i in old_messages%}
+            <ul class="msg">
+                <li>{{i['username']}} <div class="time">{{i['time']}}</div></li>
+                <li>{{i['text']}}</li>
+            </ul>
+        {%endfor%}
+    </div>
+
+    <div id="bottom-part">
+    <textarea id="input" placeholder="Введите сообщение"></textarea>
+    <button type="button" id="butt" name="send" onclick="sendMSG()" >Отправить</button>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $("#input").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#butt").click();
+        }
+    });
+
+</script>
+<script>
+<!-- send to server for database {'text': ''}    -->
+    function sendMSG(){
+        var msg = document.getElementById("input");
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://127.0.0.1:5000/send_msg");
+        xhr.responseType = 'json';
+        xhr.onload = () => {
+            console.log( xhr.response);
+        }
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({'text': msg.value.replace(/\n$/, "")}));
+    }
+</script>
+
+<script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(() => {
+
+        const socket = io.connect('http://127.0.0.1:5000');
+        const username = "{{current_user.get_name()}}";
+
+        socket.on('connect', () => {
+            socket.send({'username': 'Service message', 'text': 'User ' + username + ' has connected!', 'time': Date.now()/1000});
+        });
+// send to server {'username':'', msg:'', 'time':''}
+        $('#butt').on('click', () => {
+            if ($('#input').val().lenght !== 0){
+                socket.send({
+                    'text': $('#input').val(),
+                    'username': username,
+                    'time': Date.now()/1000
+                });
+                $('#input').val('');
+            }
+
+        });
+
+        socket.on('message', data => {
+            console.log(data)
+            if (data.text.length > 0) {
+                if (data.username === 'Service message') {
+                    $('#upper-part').append(`<ul><li class="text-muted"><strong>${data.text}</strong> </li></ul>`);
+                    var scrollinDiv = document.getElementById('upper-part');
+                    scrollinDiv.scrollTop = 9999;
+                } else {
+                    $('#upper-part').append(`<ul class="msg"><li>${data.username} <div class="time">${new Date(data.time*1000).toLocaleTimeString()}</div></li><li>${data.text}</li></ul>`);
+                    var scrollinDiv = document.getElementById('upper-part');
+                    scrollinDiv.scrollTop = 9999;
+                }
+                console.log('Received message');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -21,3 +21,5 @@ def check_exists(file):
         return True
     else:
         return False
+
+#  pyuic5 messenger.ui -o clientui.py

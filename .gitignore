@@ -1,3 +1,7 @@
 .idea/
 __pycache__/
 .DS_Store
+test.py
+sock.py
+clientui_login.py
+clientui.py
