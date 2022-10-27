@@ -19,7 +19,7 @@
 
     <div id="bottom-part">
     <textarea id="input" placeholder="Введите сообщение"></textarea>
-    <button type="button" id="butt" name="send" onclick="sendMSG()" >Отправить</button>
+    <button type="button" id="butt" name="send">Отправить</button>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -60,6 +60,7 @@
 // send to server {'username':'', msg:'', 'time':''}
         $('#butt').on('click', () => {
             if ($('#input').val().lenght !== 0){
+                sendMSG();
                 socket.send({
                     'text': $('#input').val(),
                     'username': username,

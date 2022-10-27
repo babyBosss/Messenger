@@ -90,9 +90,10 @@ def send_msg():
         except:
             print("Пользователь не опознан")
             return {"ok": False, "reason": "no user found"}
-    print("user_id= ", user_id)
+    # print("user_id= ", user_id)
     text = request.json['text']
     message = {'user_id': user_id, 'text': text}
+    print("save msg to db: ",message)
     dbase.add_msg(message)
     return {'ok': True}
 
