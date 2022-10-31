@@ -12,7 +12,7 @@
         {% for i in old_messages%}
             <ul class="msg">
                 <li>{{i['username']}} <div class="time">{{i['time']}}</div></li>
-                <li>{{i['text']}}</li>
+                <li class="msg-text">{{i['text']}}</li>
             </ul>
         {%endfor%}
     </div>
