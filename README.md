@@ -8,7 +8,7 @@ Now in the mobile version this functionality is under development
 ___
 
 <p>
-<img src="screenshots_for_git/screenshot1.png" alt="image1" width="340"  height="420" align="top" hspace="5">
-<img src="screenshots_for_git/screenshot2.png" alt="image1" width="320" height="420" align="top" hspace="5">
-<img src="screenshots_for_git/screenshot3.png" alt="image1" width="280" align="top" hspace="5">
+<img src="screenshots_for_git/screenshot1.png" alt="image1" width="340"  height="420" align="top" hspace="5" vspace="5">
+<img src="screenshots_for_git/screenshot2.png" alt="image1" width="320" height="420" align="top" hspace="5" vspace="5">
+<img src="screenshots_for_git/screenshot3.png" alt="image1" width="280" align="top" hspace="5" vspace="5">
 </p>
